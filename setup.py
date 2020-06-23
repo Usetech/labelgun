@@ -11,7 +11,7 @@ TESTS_REQUIRES = open(
 
 setup(
     name='labelgun',
-    version='0.1.0',
+    version='0.1.1',
     url='https://gitlab.usetech.ru/pub/labelgun',
     author='Aleksey Petrunnik',
     author_email='apetrunnik@usetech.ru',

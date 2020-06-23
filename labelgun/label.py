@@ -7,7 +7,7 @@ _EVENT_MEMBER_VALUE = {"description": 0, "level": 1}
 _DEFAULT_LOG_LEVEL = logging.INFO
 
 
-class Event(Enum):
+class Label(Enum):
     """Базовый класс для создания классов событий.
 
     Структура логируемых событий, состоит из:

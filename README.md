@@ -28,10 +28,10 @@ labelgun - это библиотека позволяющая в деклара�
 ## Пример использования
 
 ```python
-from labelgun.event import Event
+from labelgun.label import Label
 
 
-class GeneralEvent(Event):
+class GeneralEvent(Label):
     TEST_EVENT = "Проверка лога"
 
 print(**GeneralEvent.TEST_EVENT)
@@ -42,7 +42,7 @@ print(**GeneralEvent.TEST_EVENT)
 
 ```python
 import structlog
-from labelgun.event import Event
+from labelgun.label import Label
 
 structlog.configure(
     processors=[
@@ -56,7 +56,7 @@ structlog.configure(
 logger = structlog.get_logger("general")
 
 
-class GeneralEvent(Event):
+class GeneralEvent(Label):
     TEST_EVENT = "Проверка лога"
 
 logger.info(**GeneralEvent.TEST_EVENT)

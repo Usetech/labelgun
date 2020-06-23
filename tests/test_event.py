@@ -3,10 +3,10 @@ import logging
 import pytest
 import structlog
 
-from labelgun.event import Event
+from labelgun.label import Label
 
 
-class TestEvent(Event):
+class TestEvent(Label):
     A = ""
     B = "Уникальное описание", logging.WARNING
     C = "", logging.DEBUG
@@ -15,7 +15,7 @@ class TestEvent(Event):
 
 
 def test_event():
-    class TestEvent(Event):
+    class TestEvent(Label):
         TEST_EVENT = "Test description"
         TEST_EVENT_INT = 1
 
