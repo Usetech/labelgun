@@ -2,7 +2,7 @@ import logging
 
 from aenum import Enum, NoAlias
 
-_EVENT_PROPERTIES = ["event", "description", "level"]
+_EVENT_PROPERTIES = ["category", "event", "description", "level"]
 _EVENT_MEMBER_VALUE = {"description": 0, "level": 1}
 _DEFAULT_LOG_LEVEL = logging.INFO
 
@@ -19,6 +19,10 @@ class Label(Enum):
     """
 
     _settings_ = NoAlias
+
+    @property
+    def category(self):
+        return self.__class__.__name__
 
     @property
     def event(self):
@@ -59,3 +63,4 @@ class Label(Enum):
         if key not in _EVENT_PROPERTIES:
             raise KeyError
         return getattr(self, key)
+

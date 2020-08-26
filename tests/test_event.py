@@ -6,7 +6,7 @@ import structlog
 from labelgun.label import Label
 
 
-class TestEvent(Label):
+class ATestEvent(Label):
     A = ""
     B = "Уникальное описание", logging.WARNING
     C = "", logging.DEBUG
@@ -30,21 +30,21 @@ def test_event():
 def test_event__get_non_unique_enum_member__return_defined_value():
     # Тест проверяет, что при объявлении не уникальных значений, они не будут
     # объеденены
-    assert TestEvent.A.event == "A", TestEvent.A.event
-    assert TestEvent.B.event == "B", TestEvent.B.event
-    assert TestEvent.C.event == "C", TestEvent.C.event
-    assert TestEvent.D.event == "D", TestEvent.D.event
-    assert TestEvent.E.event == "E", TestEvent.E.event
+    assert ATestEvent.A.event == "A", ATestEvent.A.event
+    assert ATestEvent.B.event == "B", ATestEvent.B.event
+    assert ATestEvent.C.event == "C", ATestEvent.C.event
+    assert ATestEvent.D.event == "D", ATestEvent.D.event
+    assert ATestEvent.E.event == "E", ATestEvent.E.event
 
 
 @pytest.mark.parametrize(
     "inp_event, exp_event, exp_desc, exp_level",
     (
-            (TestEvent.A, "A", "", logging.INFO),
-            (TestEvent.B, "B", "Уникальное описание", logging.WARNING),
-            (TestEvent.C, "C", "", logging.DEBUG),
-            (TestEvent.D, "D", "1", logging.CRITICAL),
-            (TestEvent.E, "E", "1", logging.ERROR),
+            (ATestEvent.A, "A", "", logging.INFO),
+            (ATestEvent.B, "B", "Уникальное описание", logging.WARNING),
+            (ATestEvent.C, "C", "", logging.DEBUG),
+            (ATestEvent.D, "D", "1", logging.CRITICAL),
+            (ATestEvent.E, "E", "1", logging.ERROR),
     )
 )
 def test_event__log_event_with_structlog__success(inp_event, exp_event, exp_desc, exp_level):
@@ -54,6 +54,7 @@ def test_event__log_event_with_structlog__success(inp_event, exp_event, exp_desc
         getattr(test_logger, method)(**inp_event)
 
     assert dict(**inp_event) == {
+        "category": "ATestEvent",
         "event": exp_event,
         "description": exp_desc,
         "level": exp_level
@@ -64,11 +65,11 @@ def test_event__log_event_with_structlog__success(inp_event, exp_event, exp_desc
 @pytest.mark.parametrize(
     "inp_event, exp_dict",
     (
-            (TestEvent.A, {"event": "A", "description": "", "level": logging.INFO}),
-            (TestEvent.B, {"event": "B", "description": "Уникальное описание", "level": logging.WARNING}),
-            (TestEvent.C, {"event": "C", "description": "", "level": logging.DEBUG}),
-            (TestEvent.D, {"event": "D", "description": "1", "level": logging.CRITICAL}),
-            (TestEvent.E, {"event": "E", "description": "1", "level": logging.ERROR}),
+        (ATestEvent.A, {"category": "ATestEvent", "event": "A", "description": "", "level": logging.INFO}),
+        (ATestEvent.B, {"category": "ATestEvent", "event": "B", "description": "Уникальное описание", "level": logging.WARNING}),
+        (ATestEvent.C, {"category": "ATestEvent", "event": "C", "description": "", "level": logging.DEBUG}),
+        (ATestEvent.D, {"category": "ATestEvent", "event": "D", "description": "1", "level": logging.CRITICAL}),
+        (ATestEvent.E, {"category": "ATestEvent", "event": "E", "description": "1", "level": logging.ERROR}),
     )
 )
 def test_event__unpacking_value__success(inp_event, exp_dict):
