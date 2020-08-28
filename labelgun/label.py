@@ -2,7 +2,7 @@ import logging
 
 from aenum import Enum, NoAlias
 
-_EVENT_PROPERTIES = ["_category", "event", "description", "level"]
+_EVENT_PROPERTIES = ["label.category", "event", "label.description", "level"]
 _EVENT_MEMBER_VALUE = {"description": 0, "level": 1}
 _DEFAULT_LOG_LEVEL = logging.INFO
 
@@ -11,17 +11,19 @@ class Label(Enum):
     """Базовый класс для создания классов событий.
 
     Структура логируемых событий, состоит из:
+        - имени категории события (category),
         - имени события (event),
         - описания события (description) в свободной форме
         - уровня логирования (level) (по умолчанию используетя уровень INFO).
 
-    Данные могуть быть представлены как словарь {"event": "TEST_EVENT", "description": "описание", "level": 20}.
+    Данные могуть быть представлены как словарь:
+    {"label.category": "SomeClass", "label.event": "TEST_EVENT", "label.description": "описание", "level": 20}.
     """
 
     _settings_ = NoAlias
 
     @property
-    def _category(self):
+    def category(self):
         return self.__class__.__name__
 
     @property
@@ -62,5 +64,6 @@ class Label(Enum):
         """Позволяет распаковывать события как словарь"""
         if key not in _EVENT_PROPERTIES:
             raise KeyError
+        key = key.replace('label.', '')
         return getattr(self, key)
 

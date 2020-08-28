@@ -54,9 +54,9 @@ def test_event__log_event_with_structlog__success(inp_event, exp_event, exp_desc
         getattr(test_logger, method)(**inp_event)
 
     assert dict(**inp_event) == {
-        "_category": "ATestEvent",
+        "label.category": "ATestEvent",
         "event": exp_event,
-        "description": exp_desc,
+        "label.description": exp_desc,
         "level": exp_level
     }
     assert inp_event.level == exp_level
@@ -65,11 +65,11 @@ def test_event__log_event_with_structlog__success(inp_event, exp_event, exp_desc
 @pytest.mark.parametrize(
     "inp_event, exp_dict",
     (
-        (ATestEvent.A, {"_category": "ATestEvent", "event": "A", "description": "", "level": logging.INFO}),
-        (ATestEvent.B, {"_category": "ATestEvent", "event": "B", "description": "Уникальное описание", "level": logging.WARNING}),
-        (ATestEvent.C, {"_category": "ATestEvent", "event": "C", "description": "", "level": logging.DEBUG}),
-        (ATestEvent.D, {"_category": "ATestEvent", "event": "D", "description": "1", "level": logging.CRITICAL}),
-        (ATestEvent.E, {"_category": "ATestEvent", "event": "E", "description": "1", "level": logging.ERROR}),
+        (ATestEvent.A, {"label.category": "ATestEvent", "event": "A", "label.description": "", "level": logging.INFO}),
+        (ATestEvent.B, {"label.category": "ATestEvent", "event": "B", "label.description": "Уникальное описание", "level": logging.WARNING}),
+        (ATestEvent.C, {"label.category": "ATestEvent", "event": "C", "label.description": "", "level": logging.DEBUG}),
+        (ATestEvent.D, {"label.category": "ATestEvent", "event": "D", "label.description": "1", "level": logging.CRITICAL}),
+        (ATestEvent.E, {"label.category": "ATestEvent", "event": "E", "label.description": "1", "level": logging.ERROR}),
     )
 )
 def test_event__unpacking_value__success(inp_event, exp_dict):
