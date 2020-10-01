@@ -27,6 +27,25 @@ def test_event():
     assert TestEvent.TEST_EVENT_INT.level == logging.INFO
 
 
+def test_event_with_custom_keys():
+    class TestEvent(Label):
+        TEST_EVENT = "Test description"
+        TEST_EVENT_INT = 1
+
+        @property
+        def event_properties(self):
+            return ["label.category", "event", "label.description"]
+
+    assert str(TestEvent.TEST_EVENT) == "TEST_EVENT"
+    assert repr(TestEvent.TEST_EVENT) == "TEST_EVENT"
+    assert TestEvent.TEST_EVENT.description == "Test description"
+    assert TestEvent.TEST_EVENT.level == logging.INFO
+    assert TestEvent.TEST_EVENT_INT.description == "1"
+    assert TestEvent.TEST_EVENT_INT.level == logging.INFO
+    x_dict = {'label.category': 'TestEvent', 'event': 'TEST_EVENT', 'label.description': 'Test description'}
+    assert dict(**TestEvent.TEST_EVENT) == x_dict
+
+
 def test_event__get_non_unique_enum_member__return_defined_value():
     # Тест проверяет, что при объявлении не уникальных значений, они не будут
     # объеденены

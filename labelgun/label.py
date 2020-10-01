@@ -23,6 +23,11 @@ class Label(Enum):
     _settings_ = NoAlias
 
     @property
+    def event_properties(self):
+        """Можно переопределить в дочерних классах, чтобы изменить набор возвращаемых ключей."""
+        return _EVENT_PROPERTIES
+
+    @property
     def category(self):
         return self.__class__.__name__
 
@@ -52,7 +57,7 @@ class Label(Enum):
 
     def keys(self):
         """Позволяет распаковывать события как словарь"""
-        return _EVENT_PROPERTIES
+        return self.event_properties
 
     def __str__(self):
         return self._name_
@@ -62,7 +67,7 @@ class Label(Enum):
 
     def __getitem__(self, key):
         """Позволяет распаковывать события как словарь"""
-        if key not in _EVENT_PROPERTIES:
+        if key not in self.event_properties:
             raise KeyError
         key = key.replace('label.', '')
         return getattr(self, key)
