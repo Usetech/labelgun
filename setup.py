@@ -11,7 +11,7 @@ TESTS_REQUIRES = open(
 
 setup(
     name='labelgun',
-    version='0.1.4',
+    version='0.1.5',
     url='https://gitlab.usetech.ru/pub/labelgun',
     author='Aleksey Petrunnik',
     author_email='apetrunnik@usetech.ru',
@@ -19,4 +19,7 @@ setup(
     packages=['labelgun'],
     install_requires=REQUIRES,
     tests_require=TESTS_REQUIRES,
+    extras_require={
+        'logger': ['python-json-logger>=0.1.11', 'structlog~=20.1.0'],
+    },
 )
