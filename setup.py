@@ -11,12 +11,12 @@ TESTS_REQUIRES = open(
 
 setup(
     name='labelgun',
-    version='0.1.6',
+    version='0.1.7',
     url='https://gitlab.usetech.ru/pub/labelgun',
     author='Aleksey Petrunnik',
     author_email='apetrunnik@usetech.ru',
     description='Library to define system events',
-    packages=['labelgun'],
+    packages=['labelgun', 'labelgun.integrations'],
     install_requires=REQUIRES,
     tests_require=TESTS_REQUIRES,
     extras_require={
