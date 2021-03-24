@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "labelgun"
+version = "0.1.8"
+description = "Library to define system events"
+authors = ["Aleksey Petrunnik <apetrunnik@usetech.ru>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+aenum = "^3.0.0"
+# Опциональные зависимости
+python-json-logger = { version = "~2.0", optional = true }
+structlog = { version = "~20 || ~21", optional = true }
+
+[tool.poetry.dev-dependencies]
+pytest = "=6.2.2"
+freezegun = "=1.0.0"
+dephell = "^0.8.3"
+
+[tool.poetry.extras]
+logger = ["python-json-logger", "structlog"]
+
+[tool.dephell.main]
+from = {format = "poetry", path = "pyproject.toml"}
+to = {format = "setuppy", path = "setup.py"}
+
+[build-system]
+requires = ["poetry>=1.0.0"]
+build-backend = "poetry.masonry.api"

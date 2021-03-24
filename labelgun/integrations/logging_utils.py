@@ -11,7 +11,7 @@ class StructlogJsonFormatter(jsonlogger.JsonFormatter):
 
     _cache_loggers = {}
 
-    def __init__(self, fmt=None, *args, proc=None, **kwargs):
+    def __init__(self, fmt=None, *args, proc=tuple(), **kwargs):
         super().__init__(fmt, *args, **kwargs)
         self._structlog_processors = proc
 

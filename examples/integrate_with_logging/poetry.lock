@@ -1,0 +1,89 @@
+[[package]]
+category = "main"
+description = "Advanced Enumerations (compatible with Python's stdlib Enum), NamedTuples, and NamedConstants"
+name = "aenum"
+optional = false
+python-versions = "*"
+version = "2.2.6"
+
+[[package]]
+category = "main"
+description = "Library to define system events"
+name = "labelgun"
+optional = false
+python-versions = "*"
+version = "0.1.6"
+
+[package.dependencies]
+aenum = ">=2.2.3,<2.3.0"
+
+[package.dependencies.python-json-logger]
+optional = true
+version = ">=0.1.11"
+
+[package.dependencies.structlog]
+optional = true
+version = ">=20.1.0,<20.2.0"
+
+[package.extras]
+logger = ["python-json-logger (>=0.1.11)", "structlog (>=20.1.0,<20.2.0)"]
+
+[package.source]
+reference = "26cf6f48cbfa5d10a55cd88ed75c9e852cff7cc7"
+type = "git"
+url = "https://gitlab.usetech.ru/pub/labelgun.git"
+[[package]]
+category = "main"
+description = "A python library adding a json log formatter"
+name = "python-json-logger"
+optional = false
+python-versions = ">=3.4"
+version = "2.0.1"
+
+[[package]]
+category = "main"
+description = "Python 2 and 3 compatibility utilities"
+name = "six"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
+version = "1.15.0"
+
+[[package]]
+category = "main"
+description = "Structured Logging for Python"
+name = "structlog"
+optional = false
+python-versions = "*"
+version = "20.1.0"
+
+[package.dependencies]
+six = "*"
+
+[package.extras]
+azure-pipelines = ["coverage", "freezegun (>=0.2.8)", "pretend", "pytest (>=3.3.0)", "simplejson", "pytest-azurepipelines", "python-rapidjson", "pytest-asyncio"]
+dev = ["coverage", "freezegun (>=0.2.8)", "pretend", "pytest (>=3.3.0)", "simplejson", "sphinx", "twisted", "pre-commit", "python-rapidjson", "pytest-asyncio"]
+docs = ["sphinx", "twisted"]
+tests = ["coverage", "freezegun (>=0.2.8)", "pretend", "pytest (>=3.3.0)", "simplejson", "python-rapidjson", "pytest-asyncio"]
+
+[metadata]
+content-hash = "7ec9768c73caba2ce0537e6728c1dedf949d729b21e9323f9f8e1d7d50a8502c"
+python-versions = "^3.8"
+
+[metadata.files]
+aenum = [
+    {file = "aenum-2.2.6-py2-none-any.whl", hash = "sha256:aaebe735508d9cbc72cd6adfb59660a5e676dfbeb6fb24fb090041e7ddb8d3b3"},
+    {file = "aenum-2.2.6-py3-none-any.whl", hash = "sha256:f9d20f7302ce3dc3639b3f75c3b3e146f3b22409a6b4513c1f0bd6dbdfcbd8c1"},
+    {file = "aenum-2.2.6.tar.gz", hash = "sha256:260225470b49429f5893a195a8b99c73a8d182be42bf90c37c93e7b20e44eaae"},
+]
+labelgun = []
+python-json-logger = [
+    {file = "python-json-logger-2.0.1.tar.gz", hash = "sha256:f26eea7898db40609563bed0a7ca11af12e2a79858632706d835a0f961b7d398"},
+]
+six = [
+    {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},
+    {file = "six-1.15.0.tar.gz", hash = "sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"},
+]
+structlog = [
+    {file = "structlog-20.1.0-py2.py3-none-any.whl", hash = "sha256:8a672be150547a93d90a7d74229a29e765be05bd156a35cdcc527ebf68e9af92"},
+    {file = "structlog-20.1.0.tar.gz", hash = "sha256:7a48375db6274ed1d0ae6123c486472aa1d0890b08d314d2b016f3aa7f35990b"},
+]

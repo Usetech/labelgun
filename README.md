@@ -1,69 +1,76 @@
 labelgun
 ========
 
-labelgun - это библиотека позволяющая в декларативном стиле объявить все события, которые используются в системе.
- 
+labelgun - это библиотека позволяющая в декларативном стиле объявлять события обрабатывающиеся в системе.
 
+
+# Содержание
+
+- [Установка](#Установка)
+  
+- [Примеры](#Установка)
+  
+- [Потенциальные проблемы](#Потенциальные-проблемы)
+   
+   - [Name clash](#Name-clash)
+   
+- [Разработка](#Разработка)
+
+    - [Настройка окружения](#Настройка-окружения)
+    - [Сборка дистрибутива](#Сборка-дистрибутива)
+    - [Генерация setup.py](#Генерация-setup.py)
+    
+- [Документация](#Документация)
+
+
+<a name='Установка'></a>
 ## Установка
 
-- Установка из исходников
-    
-    ```
-    python ./setup.py install
-    ```
+Так как данная библиотека предполагает различные способы ее использования, установить ее можно несколькими способами:
 
-- Установка из git репозитория
-    
-    ```
-    pip install git+https://gitlab.usetech.ru/pub/labelgun.git@<tag>
-    ```
-    
-    То есть если вы хотите установить версию 0.1.0, то необходимо выполнить
-    
-    ```
-    pip install git+https://gitlab.usetech.ru/pub/labelgun.git@0.1.0
-    ```
+1. Установка базовой версии. В этом случае будет установлено только ядро библиотеки позволяющие 
+   объявлять labels вашей системы. На пример вы можете объявляться ответы отправляемые с вашего backend, на frontend.
+   
+   ```
+   pip install git+https://gitlab.usetech.ru/pub/labelgun.git
+   ```
+   
+   Установка заданной версии
+   
+   ```
+   pip install git+https://gitlab.usetech.ru/pub/labelgun.git@<tag>
+   ```
+   
+2. Установка ядра библиотеки и библиотек помогающих интегрировать labelgun с системой логирования. В этом 
+   случае будет установлен structlog, а так же другие вспомогательные библиотеки.
+   
+   ```
+   pip install git+https://gitlab.usetech.ru/pub/labelgun.git#egg=labelgun[logger]
+   ```
+   
+   Установка заданной версии
+   
+   ```
+   pip install git+https://gitlab.usetech.ru/pub/labelgun.git@<tag>#egg=labelgun[logger]
+   ```
 
 
-## Пример использования
+<a name='Примеры'></a>
+## Примеры
 
-```python
-from labelgun.label import Label
+Пример того как необходимо интегрировать библиотеку в проект можно посмотреть в example/integrate_with_logging.
+В данном проекте реализована интеграция structlog и logging, показано как реализовать логирование в json, а так же 
+как применять labelgun для структурирования логов.
 
-class GeneralEvent(Label):
-    TEST_EVENT = "Проверка лога"
 
-dict(**GeneralEvent.TEST_EVENT)
-# {'label.category': 'GeneralEvent', 'event': 'TEST_EVENT', 'label.description': 'Проверка лога', 'level': 20}
-```
 
-Пример использования вместе с библиотекой `structlog`
+<a name='Потенциальные-проблемы'></a>
+## Потенциальные проблемы
 
-```python
-import structlog
-from labelgun.label import Label
+<a name='Name-clash'></a>
+### Name clash
 
-structlog.configure(
-    processors=[
-        structlog.processors.JSONRenderer(ensure_ascii=False),
-    ],
-    context_class=structlog.threadlocal.wrap_dict(dict),
-    logger_factory=structlog.stdlib.LoggerFactory(),
-    wrapper_class=structlog.stdlib.BoundLogger,
-    cache_logger_on_first_use=True,
-)
-logger = structlog.get_logger("general")
-
-class GeneralEvent(Label):
-    TEST_EVENT = "Проверка лога"
-
-logger.info(**GeneralEvent.TEST_EVENT)
-# timestamp='...' level='info' logger='general' label.category='GeneralEvent' event=TEST_EVENT label.description='Проверка лога'
-```
-
-## Name clash
-
-при использовании библиотеки нужно быть осторожным с передачей параметров логгеру:
+При использовании библиотеки нужно быть осторожным с передачей параметров логгеру:
 
 ```python
 class UserEvent(Label):
@@ -73,12 +80,77 @@ def update_user_level(**params):
     if 'level' not in params:
         params['level'] = calculate_new_level_for(user)
     logger.log(**UserEvent.LEVEL_UP, **params)
-    print(f'level up!')
+    print('level up!')
 ```
 
-подобный код полностью перезапишет параметр level для логгера. Следовательно,
+Подобный код полностью перезапишет параметр level для логгера. Следовательно,
 нужно следить за передачей в structlog переменных, совпадающих по имени с переменными
-событий: ``label.category``, ``event``, ``label.description``, ``level``.
+событий: `label.category`, `event`, `label.description`, `level`.
 
-Имена ``event`` и ``level`` не имеют префиксов, т.к. требуются для передачи логгеру.
+Имена `event` и `level` не имеют префиксов, т.к. требуются для передачи логгеру.
+
+
+<a name='Разработка'></a>
+## Разработка
+
+<a name='Настройка-окружения'></a>
+### Настройка окружения
+
+Установка зависимостей
+
+```
+poetry install -E logger
+```
+
+<a name='Сборка-дистрибутива'></a>
+### Сборка дистрибутива
+
+```
+poetry build
+```
+
+<a name='Генерация-setup.py'></a>
+### Генерация setup.py
+
+После каждого обновления pyproject.toml необходимо обновлять файл setup.py, чтобы была возможность установить библиотеку
+из git репозитория и проекты не использующие poetry могли использовать ее.
+
+Сделать это можно при помощи команды:
+
+```
+rm ./setup.py && dephell deps convert
+```
+
+
+
+<a name='Документация'></a>
+## Документация
+
+**structlog processor**
+
+`labelgun.integrations.structlog_utils.dict_msg_processor`
+
+Позволяет переложить конвертацию данных в строку на Formatter библиотеки logging. Данная возможность полезна при 
+внедрении structlog в приложение, где часть логов уже пишется при помощи библиотеки logging.
+
+P.S. Иными словами, данный процессор служит заменой для structlog.dev.ConsoleRenderer или 
+structlog.processors.JSONRenderer и позволяет сказать библиотеке structlog, что данные, которые необходимо 
+залогировать сформированы и можно передать их дальше.
+
+Данный процессор должен быть ВСЕГДА ПОСЛЕДНИМ в списке процессоров.
+
+
+`labelgun.integrations.structlog_utils.convert_event_dict_to_str_processor`
+
+Выполняет конвертацию "примитивных" типов в строки. Под примитивами понимаются числа, uuid, различные обертки
+позволяющие выполнять точные расчеты (например Decimal) и т.д.
+
+Помогает избежать проблемы, если логи вашего приложения загружаются в elasticsearch для анализа.
+    
+Пример решаемой проблемы:
+Логи с нескольких сервисов собираются в одном индексе elasticsearch и каждый из этих сервисов в логах использует
+переменную с одинаковым именем, но содержание у них разное. На пример в одном сервисе логируется user_id=1, а в 
+другом user_id='4v43gbv33'. В этом случае в elasticsearch попадут логи только того сервиса, сообщение от которого 
+будет обработано раньше. Это происходит потому, что индекс в elasticsearch типизирован и одно поле не может хранить 
+данные различных типов.
 

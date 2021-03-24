@@ -1,5 +1,0 @@
--r requirements.txt
-pytest==5.4.3
-structlog~=20.1.0
-python-json-logger>=0.1.11
-freezegun==1.0.0
