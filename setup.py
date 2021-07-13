@@ -20,6 +20,7 @@ setup(
     python_requires='==3.*,>=3.6.0',
     author='Aleksey Petrunnik',
     author_email='apetrunnik@usetech.ru',
+    license='MIT',
     packages=['labelgun', 'labelgun.integrations'],
     package_dir={"": "."},
     package_data={"labelgun": ["labelgun.egg-info/*.txt"]},

@@ -3,6 +3,7 @@ name = "labelgun"
 version = "0.1.8"
 description = "Library to define system events"
 authors = ["Aleksey Petrunnik <apetrunnik@usetech.ru>"]
+license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.6"
@@ -14,7 +15,9 @@ structlog = { version = "~20 || ~21", optional = true }
 [tool.poetry.dev-dependencies]
 pytest = "=6.2.2"
 freezegun = "=1.0.0"
-dephell = "^0.8.3"
+dephell = "=0.8.3"
+# Новая версия не работает коррктно с dephell
+tomlkit = "=0.7.0"
 
 [tool.poetry.extras]
 logger = ["python-json-logger", "structlog"]

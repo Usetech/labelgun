@@ -146,7 +146,7 @@ poetry install -E logger
 ### Сборка дистрибутива
 
 ```
-poetry build
+make build
 ```
 
 <a name='Генерация-setup.py'></a>
@@ -158,7 +158,7 @@ poetry build
 Сделать это можно при помощи команды:
 
 ```
-rm ./setup.py && dephell deps convert
+make build-setuppy
 ```
 
 
