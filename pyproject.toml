@@ -18,6 +18,8 @@ freezegun = "=1.0.0"
 dephell = "=0.8.3"
 # Новая версия не работает коррктно с dephell
 tomlkit = "=0.7.0"
+pytest-cov = "2.10.0"
+pytest-html = "^3.0.0"
 
 [tool.poetry.extras]
 logger = ["python-json-logger", "structlog"]

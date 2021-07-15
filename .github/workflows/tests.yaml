@@ -1,0 +1,19 @@
+on:
+  push:
+    branches:
+      - 'master'
+      - 'developer'
+    paths:
+      - '!pyproject.toml'
+      - '!poetry.lock'
+      - '!base.Dockerfile'
+      - '!Dockerfile'
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run tests
+        run: bash .github/scripts/run-test.sh

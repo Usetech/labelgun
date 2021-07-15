@@ -1,0 +1,32 @@
+on:
+  push:
+    branches:
+      - 'master'
+      - 'developer'
+    paths:
+      - 'pyproject.toml'
+      - 'poetry.lock'
+      - 'base.Dockerfile'
+      - 'Dockerfile'
+  pull_request:
+
+jobs:
+  build_img:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to gitlab registry
+        run: echo ${{ secrets.GITLAB_PASS }} | docker login registry.usetech.ru -u ${{ secrets.GITLAB_LOGIN }} --password-stdin
+      - uses: actions/checkout@v2
+      - name: Build image
+        run: docker build -t registry.usetech.ru/pub/labelgun/ci:${GITHUB_REF:11} -f Dockerfile .
+      - name: Push image to gitlab
+        run: docker push registry.usetech.ru/pub/labelgun/ci:${GITHUB_REF:11}
+
+  pytest:
+    runs-on: ubuntu-latest
+    needs:
+      - build_img
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run tests
+        run: bash .github/scripts/run-test.sh

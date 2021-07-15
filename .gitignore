@@ -132,6 +132,9 @@ pip-delete-this-directory.txt
 htmlcov/
 .tox/
 .nox/
+coverage/
+assets/
+test-report.html
 .coverage
 .coverage.*
 .cache
@@ -238,7 +241,6 @@ cython_debug/
 [Ll]ib
 [Ll]ib64
 [Ll]ocal
-[Ss]cripts
 pyvenv.cfg
 .venv
 pip-selfcheck.json
