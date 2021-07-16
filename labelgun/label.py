@@ -69,6 +69,8 @@ class Label(Enum):
         """Позволяет распаковывать события как словарь"""
         if key not in self.event_properties:
             raise KeyError
+
         key = key.replace('label.', '')
+
         return getattr(self, key)
 
