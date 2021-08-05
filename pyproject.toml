@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "labelgun"
-version = "0.1.8"
+version = "0.1.9"
 description = "Library to define system events"
 authors = ["Aleksey Petrunnik <apetrunnik@usetech.ru>"]
 license = "MIT"
@@ -16,7 +16,7 @@ structlog = { version = "~20 || ~21", optional = true }
 pytest = "=6.2.2"
 freezegun = "=1.0.0"
 dephell = "=0.8.3"
-# Новая версия не работает коррктно с dephell
+# Новая версия не работает корректно с dephell
 tomlkit = "=0.7.0"
 
 [tool.poetry.extras]
