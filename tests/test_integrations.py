@@ -16,7 +16,6 @@ from labelgun.integrations.structlog_utils import dict_msg_processor, convert_ev
 @freeze_time("2012-01-14")
 def processors():
     return [
-        structlog.stdlib.filter_by_level,
         structlog.processors.TimeStamper(fmt="iso"),
         structlog.stdlib.add_logger_name,
         structlog.stdlib.add_log_level,
@@ -87,6 +86,17 @@ class TestStructlogJsonFormatter:
         assert formatted_log_record == (
             '{"label.category": "FooLabel", "label.description": "описание тестового евента", "event": "TEST_EVENT", '
             '"timestamp": "2012-01-14T00:00:00Z", "logger": "for_test", "level": 20}'
+        )
+
+    @freeze_time("2012-01-14")
+    def test_failed_processor(self, processors, log_record, caplog):
+        formatter = StructlogJsonFormatter()
+        processors.insert(0, lambda *_, **__: 1/0)
+        formatter.set_structlog_processors(processors)
+        formatted_log_record = formatter.format(log_record)
+        assert caplog.records[0].msg == "STRUCTLOG_PROCESSOR_THREW_AN_EXCEPTION"
+        assert formatted_log_record == (
+            '{"event": "msg", "timestamp": "2012-01-14T00:00:00Z", "logger": "for_test", "level": "info"}'
         )
 
 

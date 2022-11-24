@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "labelgun"
-version = "0.1.10"
+version = "0.2.0"
 description = "Library to define system events"
 authors = ["Aleksey Petrunnik <apetrunnik@usetech.com>", "Mstislav Kazakov <mkazakov@usetech.com>"]
 license = "MIT"
@@ -13,11 +13,11 @@ python-json-logger = { version = "~2.0", optional = true }
 structlog = { version = "~20 || ~21", optional = true }
 
 [tool.poetry.dev-dependencies]
-pytest = "=6.2.2"
 freezegun = "=1.0.0"
 dephell = "=0.8.3"
 # Новая версия не работает корректно с dephell
 tomlkit = "=0.7.0"
+pytest = "7.0.1"
 
 [tool.poetry.extras]
 logger = ["python-json-logger", "structlog"]
