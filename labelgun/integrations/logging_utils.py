@@ -5,6 +5,9 @@ from logging import LogRecord
 from pythonjsonlogger import jsonlogger
 
 
+labelgun_logger = logging.getLogger(__name__)
+
+
 class StructlogJsonFormatter(jsonlogger.JsonFormatter):
     """Formatter для стандартного python логгера logging. Позволяет конфигурировать себя при помощи списка
     процессоров от structlog и выполняет логирование в json формате."""
@@ -42,4 +45,7 @@ class StructlogJsonFormatter(jsonlogger.JsonFormatter):
         level = record.levelname.lower()
 
         for proc in self._structlog_processors:
-            event_dict = proc(logger, level, event_dict)
+            try:
+                event_dict = proc(logger, level, event_dict)
+            except Exception:
+                labelgun_logger.exception("STRUCTLOG_PROCESSOR_THREW_AN_EXCEPTION")
