@@ -16,8 +16,7 @@ def dict_msg_processor(logger: logging.Logger, name: str, event_dict: dict):
 
 
 def convert_event_dict_to_str_processor(logger: logging.Logger, name: str, event_dict: dict):
-    """Выполняет конвертацию "примитивных" типов в строки. Под примитивами понимаются числа, uuid, различные обертки
-    позволяющие выполнять точные расчеты (например Decimal).
+    """Выполняет конвертацию всех данных в строки.
 
     Данный процессор помогает избежать проблемы, если логи вашего приложения загружаются в elasticsearch для анализа.
 
@@ -30,11 +29,6 @@ def convert_event_dict_to_str_processor(logger: logging.Logger, name: str, event
 
     """
     for param_key, param_value in event_dict.items():
-        if not isinstance(param_value, str):
-            try:
-                iter(param_value)
-            except TypeError:
-                # Если сработало исключение, значит сейчас обрабатывается ни какая-то коллекция, а простой тип данных.
-                event_dict[param_key] = str(param_value)
+        event_dict[param_key] = str(param_value)
 
     return event_dict

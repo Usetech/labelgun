@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "labelgun"
-version = "0.1.9"
+version = "0.1.10"
 description = "Library to define system events"
-authors = ["Aleksey Petrunnik <apetrunnik@usetech.ru>"]
+authors = ["Aleksey Petrunnik <apetrunnik@usetech.com>", "Mstislav Kazakov <mkazakov@usetech.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]

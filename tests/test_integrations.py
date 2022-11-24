@@ -105,9 +105,9 @@ def test_convert_event_dict_to_str_processor__convert_to_str__success(logger, ev
             'level': str(logger.level),
             'id_user': '1245',
             'salary': '564535',
-            'person_data': {'id': 1, 'name': 'Name', 'surname': 'Surname'},
+            'person_data': "{'id': 1, 'name': 'Name', 'surname': 'Surname'}",
             'survey_id': 'b5b72996-912c-44eb-814c-93f061db93f1',
-            'sample_id_set': {1, 2, 3},
+            'sample_id_set': "{1, 2, 3}",
         }
     )
 
