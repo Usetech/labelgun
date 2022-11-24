@@ -29,6 +29,10 @@ def convert_event_dict_to_str_processor(logger: logging.Logger, name: str, event
 
     """
     for param_key, param_value in event_dict.items():
+        # не нужно приводить None к строке "None", это вызовет больше проблем.
+        if param_value is None:
+            continue
+
         event_dict[param_key] = str(param_value)
 
     return event_dict

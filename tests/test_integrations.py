@@ -7,6 +7,7 @@ from uuid import UUID
 import pytest
 import structlog
 from freezegun import freeze_time
+from structlog.testing import LogCapture
 
 from labelgun.integrations.logging_utils import StructlogJsonFormatter
 from labelgun.integrations.structlog_utils import dict_msg_processor, convert_event_dict_to_str_processor
@@ -31,6 +32,16 @@ def processors():
 def logger():
     logger = logging.getLogger('for_test')
     logger.setLevel(logging.INFO)
+    return logger
+
+
+@pytest.fixture()
+def structlog_logger(processors):
+    logger = structlog.get_logger(__name__)
+    logger._processors = processors.copy()
+    logger.capture = LogCapture()
+    logger._processors.append(logger.capture)
+
     return logger
 
 
@@ -151,3 +162,22 @@ def test_convert_event_dict_to_str_processor__use_with_other_processors__success
         '"person_data": {"id": 1, "name": "Name", "surname": "Surname"}, '
         '"survey_id": "b5b72996-912c-44eb-814c-93f061db93f1", "sample_id_set": "{1, 2, 3}"}'
     )
+
+
+@pytest.mark.parametrize(
+    "input,output", (
+            (None, None),
+            (1, "1"),
+            ("hello", "hello"),
+            ([1, 2, 3], "[1, 2, 3]"),
+            ({"a": "b"}, "{'a': 'b'}")
+    )
+)
+def test_convert_event_params_to_str(processors, structlog_logger, input, output):
+    processors.insert(-1, convert_event_dict_to_str_processor)
+    processors.insert(-1, structlog_logger.capture)
+    structlog_logger._processors = processors
+    structlog_logger.warning("TEST", input=input)
+
+    assert len(structlog_logger.capture.entries) == 1
+    assert structlog_logger.capture.entries[0]["input"] == output
